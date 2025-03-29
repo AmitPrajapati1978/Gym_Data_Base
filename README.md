@@ -41,27 +41,3 @@ A full-stack gym admin dashboard built with **Python**, **SQLite**, and **Stream
 
 ---
 
-## 🧠 SQL Highlights
-
-### 📐 Relational Database Design
-
-- `members` ⟶ `membership_plans`
-- `members` ⟶ `payments` (via TRIGGER)
-- `events` ⟶ `trainers`
-- `event_attendance` ⟶ members + events
-
-### ⚡ Triggers
-
-> Whenever a member is added, a **payment record is automatically generated** using a `TRIGGER` in SQLite.
-
-```sql
-CREATE TRIGGER AddMemberAndPayment
-AFTER INSERT ON members
-BEGIN
-  INSERT INTO payments (member_id, amount, payment_date)
-  VALUES (
-    NEW.member_id,
-    (SELECT price FROM membership_plans WHERE plan_id = NEW.plan_id),
-    DATE('now')
-  );
-END;
